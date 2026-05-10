@@ -1,0 +1,46 @@
+name: QuickEco
+version: 1.0.0
+main: com.quickeco.QuickEco
+api-version: '1.20'
+author: QuickPlugins
+description: Free economy plugin with multi-currency, bank accounts, transaction history, Vault & PlaceholderAPI support.
+softdepend: [PlaceholderAPI, Vault, QuickCrates]
+folia-supported: false
+
+commands:
+  quickeco:
+    description: Main economy command
+    aliases: [qe, eco]
+    usage: /qe help
+  balance:
+    description: Check your balance
+    aliases: [bal, money]
+    usage: /balance [player]
+  pay:
+    description: Pay another player
+    aliases: [send]
+    usage: /pay <player> <amount>
+  baltop:
+    description: View balance leaderboard
+    aliases: [balancetop, wealth]
+    usage: /baltop
+
+permissions:
+  quickeco.*:
+    description: All QuickEco permissions
+    default: op
+    children:
+      quickeco.admin: true
+      quickeco.use: true
+  quickeco.admin:
+    description: Admin commands (set, give, take, reload)
+    default: op
+  quickeco.use:
+    description: Use economy commands (balance, pay)
+    default: true
+  quickeco.pay:
+    description: Send money to other players
+    default: true
+  quickeco.baltop:
+    description: View balance leaderboard
+    default: true
