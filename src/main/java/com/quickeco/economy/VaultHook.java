@@ -59,8 +59,6 @@ public class VaultHook implements Economy {
         return plugin.getConfig().getString("settings.currency-singular", "coin");
     }
 
-    // -- Account management --
-
     @Override
     public boolean hasAccount(OfflinePlayer player) {
         return provider.hasAccount(player);
@@ -83,8 +81,6 @@ public class VaultHook implements Economy {
         return createPlayerAccount(player);
     }
 
-    // -- Balance --
-
     @Override
     public double getBalance(OfflinePlayer player) {
         return provider.getBalance(player);
@@ -95,8 +91,6 @@ public class VaultHook implements Economy {
         return getBalance(player);
     }
 
-    // -- Has --
-
     @Override
     public boolean has(OfflinePlayer player, double amount) {
         return provider.has(player, amount);
@@ -106,8 +100,6 @@ public class VaultHook implements Economy {
     public boolean has(OfflinePlayer player, String worldName, double amount) {
         return has(player, amount);
     }
-
-    // -- Withdraw --
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
@@ -123,8 +115,6 @@ public class VaultHook implements Economy {
         return withdrawPlayer(player, amount);
     }
 
-    // -- Deposit --
-
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
         if (amount < 0) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative amounts");
@@ -136,8 +126,6 @@ public class VaultHook implements Economy {
     public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
         return depositPlayer(player, amount);
     }
-
-    // -- Bank (not supported) --
 
     @Override @Deprecated
     public EconomyResponse createBank(String name, String playerName) {
@@ -198,8 +186,6 @@ public class VaultHook implements Economy {
     public List<String> getBanks() {
         return List.of();
     }
-
-    // -- Deprecated (pre-1.13) --
 
     @Override @Deprecated
     public boolean hasAccount(String playerName) { return false; }

@@ -35,7 +35,8 @@ public final class Items {
             }
             if (sec.getBoolean("glow", false)) {
                 try {
-                    meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                    Enchantment glowEnchant = Enchantment.getByKey(NamespacedKey.minecraft("unbreaking"));
+                    if (glowEnchant != null) meta.addEnchant(glowEnchant, 1, true);
                 } catch (Throwable ignored) {}
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }

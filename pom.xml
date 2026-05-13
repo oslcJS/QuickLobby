@@ -90,17 +90,12 @@
 
     <profiles>
         <profile><id>paper-1.20.4</id><properties><paper.api.version>1.20.4-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-1.20.5</id><properties><paper.api.version>1.20.5-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-1.20.6</id><properties><paper.api.version>1.20.6-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-1.21</id><properties><paper.api.version>1.21-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-1.21.1</id><properties><paper.api.version>1.21.1-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-1.21.3</id><properties><paper.api.version>1.21.3-R0.1-SNAPSHOT</paper.api.version></properties></profile>
+
         <profile><id>paper-1.21.4</id><properties><paper.api.version>1.21.4-R0.1-SNAPSHOT</paper.api.version></properties></profile>
         <profile><id>paper-1.21.5</id><properties><paper.api.version>1.21.5-R0.1-SNAPSHOT</paper.api.version></properties></profile>
         <profile><id>paper-1.21.6</id><properties><paper.api.version>1.21.6-R0.1-SNAPSHOT</paper.api.version></properties></profile>
         <profile><id>paper-1.21.7</id><properties><paper.api.version>1.21.7-R0.1-SNAPSHOT</paper.api.version></properties></profile>
         <profile><id>paper-1.21.8</id><properties><paper.api.version>1.21.8-R0.1-SNAPSHOT</paper.api.version></properties></profile>
-        <profile><id>paper-26.1</id><properties><paper.api.version>[26.1.build,26.1.1.build)</paper.api.version></properties></profile>
         <profile><id>paper-26.1.1</id><properties><paper.api.version>[26.1.1.build,26.1.2.build)</paper.api.version></properties></profile>
         <profile><id>paper-26.1.2</id><properties><paper.api.version>[26.1.2.build,)</paper.api.version></properties></profile>
     </profiles>

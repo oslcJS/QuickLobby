@@ -48,7 +48,6 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         if (amount < minPay) { s.sendMessage(Msg.color("&cMinimum pay amount is " + minPay)); return true; }
         if (amount > maxPay) { s.sendMessage(Msg.color("&cMaximum pay amount is " + maxPay)); return true; }
 
-        // Cooldown
         int cooldownSec = plugin.getConfig().getInt("settings.pay-cooldown", 3);
         if (cooldownSec > 0) {
             long last = cooldowns.getOrDefault(sender.getUniqueId(), 0L);
@@ -65,7 +64,6 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         if (!eco.hasAccount(sender)) eco.createAccount(sender);
         if (!eco.hasAccount(target)) eco.createAccount(target);
 
-        // Fee
         String feeType = plugin.getConfig().getString("settings.pay-fee-type", "flat");
         double fee = plugin.getConfig().getDouble("settings.pay-fee", 0.0);
         double totalCost = amount + ("percent".equalsIgnoreCase(feeType) ? amount * fee / 100.0 : fee);
