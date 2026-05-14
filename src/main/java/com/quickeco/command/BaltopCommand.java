@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class BaltopCommand implements CommandExecutor {
+public class BaltopCommand implements CommandExecutor, TabCompleter {
 
     private final QuickEco plugin;
 
@@ -53,5 +53,13 @@ public class BaltopCommand implements CommandExecutor {
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c, @NotNull String l, @NotNull String[] a) {
+        if (a.length == 1) {
+            return List.of("5", "10", "15", "20", "25", "50");
+        }
+        return List.of();
     }
 }
