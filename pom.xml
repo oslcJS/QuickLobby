@@ -4,11 +4,11 @@
 
     <groupId>com.quickeco</groupId>
     <artifactId>QuickEco</artifactId>
-    <version>1.11</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>QuickEco</name>
-    <description>Free, open-source economy plugin with multi-currency, bank accounts, transaction history, and Vault support.</description>
+    <description>Free, open-source economy plugin with Vault, PlaceholderAPI, and a GUI balance editor.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

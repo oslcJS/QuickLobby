@@ -3,27 +3,30 @@ version: ${project.version}
 main: com.quickeco.QuickEco
 api-version: '1.20'
 author: QuickPlugins
-description: Free economy plugin with multi-currency, bank accounts, transaction history, Vault & PlaceholderAPI support.
+description: Economy plugin with GUI balance editor, Vault, and PlaceholderAPI support.
 softdepend: [PlaceholderAPI, Vault, QuickCrates]
 folia-supported: false
 
 commands:
   quickeco:
-    description: Main economy command
+    description: QuickEco admin command
     aliases: [qe, eco]
     usage: /qe help
   balance:
     description: Check your balance
     aliases: [bal, money]
     usage: /balance [player]
+    permission: quickeco.use
   pay:
     description: Pay another player
     aliases: [send]
     usage: /pay <player> <amount>
+    permission: qe.pay
   baltop:
     description: View balance leaderboard
     aliases: [balancetop, wealth]
-    usage: /baltop
+    usage: /baltop [count]
+    permission: qe.baltop
 
 permissions:
   quickeco.*:
@@ -33,14 +36,33 @@ permissions:
       quickeco.admin: true
       quickeco.use: true
   quickeco.admin:
-    description: Admin commands (set, give, take, reload)
+    description: All admin features
     default: op
+    children:
+      quickeco.use: true
+      qe.reload: true
+      qe.edit: true
+      qe.give: true
+      qe.take: true
+      qe.set: true
+      qe.remove: true
+      qe.settings: true
+      qe.balance.others: true
   quickeco.use:
-    description: Use economy commands (balance, pay)
+    description: Use economy commands (balance, pay, baltop)
     default: true
-  quickeco.pay:
-    description: Send money to other players
-    default: true
-  quickeco.baltop:
-    description: View balance leaderboard
-    default: true
+    children:
+      qe.balance: true
+      qe.pay: true
+      qe.baltop: true
+  qe.reload: { default: op }
+  qe.edit: { default: op }
+  qe.give: { default: op }
+  qe.take: { default: op }
+  qe.set: { default: op }
+  qe.remove: { default: op }
+  qe.settings: { default: op }
+  qe.balance: { default: true }
+  qe.balance.others: { default: op }
+  qe.pay: { default: true }
+  qe.baltop: { default: true }

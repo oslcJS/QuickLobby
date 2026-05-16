@@ -3,7 +3,11 @@ package com.quickeco.economy;
 import com.quickeco.QuickEco;
 import org.bukkit.OfflinePlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EconomyProvider {
@@ -21,6 +25,10 @@ public class EconomyProvider {
 
     public void createAccount(OfflinePlayer player) {
         balances.putIfAbsent(player.getUniqueId(), getStartingBalance());
+    }
+
+    public void removeAccount(OfflinePlayer player) {
+        balances.remove(player.getUniqueId());
     }
 
     public double getBalance(OfflinePlayer player) {
