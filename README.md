@@ -48,8 +48,10 @@ QuickEco is a lightweight economy: per-player balances, pay, baltop, and an admi
 - runtime settings panel: `/qe settings [key] [value]`
 - pay command with fee, cooldown, min/max enforcement
 - baltop leaderboard
-- Vault economy provider registration
-- PlaceholderAPI expansion (`%quickeco_balance%`, formatted variants, currency names)
+- Vault economy provider registration (auto)
+- PlaceholderAPI expansion with rank, top-N, and per-player placeholders
+- migrate from other plugins: `/qe import essentials` and `/qe import cmi`
+- group-aware starting balance via `quickeco.group.<name>` (works with LuckPerms, PermissionsEx, GroupManager, etc.)
 - transaction logging gate
 - QuickLink discovery for inter-plugin awareness
 
@@ -90,6 +92,7 @@ Drop the jar into `/plugins` and restart. Optional: Vault (registers the economy
 /qe set <player> <amount>
 /qe remove <player>              deletes the account
 /qe settings [key] [value]
+/qe import <essentials|cmi>      migrate balances from another plugin
 ```
 
 ### player
@@ -191,11 +194,19 @@ Balances persist to `balances.yml`. The async save task runs every `auto-save-in
 ## placeholders
 
 ```text
-%quickeco_balance%               raw double
-%quickeco_balance_formatted%     "$1,234.56" (or whatever currency-symbol is set to)
-%quickeco_balance_<uuid>%        another player's raw balance
-%quickeco_currency%              currency plural
-%quickeco_currency_singular%     currency singular
+%quickeco_balance%                  raw double
+%quickeco_balance_formatted%        "$1234.56" (uses currency-symbol)
+%quickeco_balance_<uuid>%           any player's raw balance by UUID
+%quickeco_balance_<name>%           any player's raw balance by name
+%quickeco_balance_formatted_<x>%    formatted variant of the above
+%quickeco_rank%                     viewing player's rank in baltop
+%quickeco_top_<n>_name%             nth-richest player's name
+%quickeco_top_<n>_balance%          nth-richest raw balance
+%quickeco_top_<n>_formatted%        nth-richest formatted balance
+%quickeco_has_<amount>%             "true" / "false" if player has at least <amount>
+%quickeco_currency%                 currency plural
+%quickeco_currency_singular%        currency singular
+%quickeco_currency_symbol%          currency symbol ($)
 ```
 
 ---
@@ -233,6 +244,37 @@ MIT
 ![](https://raw.githubusercontent.com/oslcJS/.github/main/assets/7.gif)
 
 Soft-depends on PlaceholderAPI, Vault, and QuickCrates. No required plugin dependencies.
+
+### supported integrations
+
+| Plugin            | How it integrates                                                |
+|-------------------|------------------------------------------------------------------|
+| **Vault**         | Registered as `Economy` provider on enable. Any Vault consumer (Shop, EssentialsX-Chat prefix, etc.) reads QuickEco balances transparently. |
+| **PlaceholderAPI**| `%quickeco_*%` expansion (balance, formatted, rank, top-N, has). |
+| **LuckPerms** / any permissions plugin | Per-group starting balance via `quickeco.group.<name>` nodes in `starting-balance-by-group:`. |
+| **EssentialsX**   | Migrate balances with `/qe import essentials`. Reads `plugins/Essentials/userdata/*.yml`. |
+| **CMI**           | Migrate balances with `/qe import cmi`. Tries `userdata/`, `data/userdata/`, and `players/` directories and accepts `Balance`, `money`, `Money`, or `balance` keys. |
+| **Treasury**      | Treasury auto-picks up the Vault registration through its compatibility layer. No additional setup required. |
+| **QuickCrates**   | Crate rewards can deposit via QuickEco (handled on the QuickCrates side via QuickLink). |
+| **QuickLobby**    | Discoverable via QuickLink for cross-plugin awareness. |
+
+### import workflow
+
+```text
+/qe import essentials
+```
+
+Before running, the plugin makes a timestamped backup of `balances.yml`
+(`balances.yml.bak.<millis>`). Then it walks the source plugin's userdata
+directory, parses each player file, and writes the balance into the QuickEco
+provider. After import, `/qe baltop` shows the migrated values immediately.
+
+If the import gets the wrong values, restore the backup:
+
+```bash
+cp plugins/QuickEco/balances.yml.bak.<millis> plugins/QuickEco/balances.yml
+# then /qe reload
+```
 
 ---
 

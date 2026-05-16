@@ -29,6 +29,16 @@ edit-gui:
   deposit-presets: [100, 1000, 10000]
   withdraw-presets: [100, 1000, 10000]
 
+# Group-aware starting balance. When enabled, new accounts use the
+# highest-priority group permission the player holds. Grant via
+# permission node `quickeco.group.<name>` (e.g. via LuckPerms).
+starting-balance-by-group:
+  enabled: false
+  groups:
+    vip: 500.0
+    mvp: 1500.0
+    legendary: 5000.0
+
 messages:
   prefix: "&2[QuickEco] &r"
   no-permission: "&cYou don't have permission."
@@ -65,3 +75,8 @@ messages:
   settings-unknown-key: "&cUnknown setting key: &e{key}"
 
   saved: "&aBalances saved."
+
+  import-starting: "&7Starting import from &e{source}&7..."
+  import-done: "&aImported &e{imported}&a balances from &e{source}&a. &7({skipped} skipped)"
+  import-missing: "&cSource not found: &e{path}"
+  import-unknown: "&cUnknown import source: &e{source}&c. Use essentials or cmi."

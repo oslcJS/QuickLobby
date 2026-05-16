@@ -1,6 +1,7 @@
 package com.quickeco.command;
 
 import com.quickeco.QuickEco;
+import com.quickeco.compat.ImportManager;
 import com.quickeco.economy.EconomyProvider;
 import com.quickeco.gui.EcoEditGui;
 import com.quickeco.util.Msg;
@@ -36,6 +37,7 @@ public class QuickEcoCommand implements CommandExecutor, TabCompleter {
             case "set" -> set(s, a);
             case "remove" -> remove(s, a);
             case "settings" -> settings(s, a);
+            case "import" -> importCmd(s, a);
             default -> Msg.send(s, "unknown-subcommand");
         }
         return true;
@@ -50,6 +52,7 @@ public class QuickEcoCommand implements CommandExecutor, TabCompleter {
         Msg.plain(s, "&e/qe set <player> <amount>");
         Msg.plain(s, "&e/qe remove <player> &7- delete account");
         Msg.plain(s, "&e/qe settings [key] [value]");
+        Msg.plain(s, "&e/qe import <essentials|cmi> &7- migrate balances from another plugin");
         Msg.plain(s, "&e/balance, /pay, /baltop &7- player commands");
     }
 
@@ -149,6 +152,27 @@ public class QuickEcoCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void importCmd(CommandSender s, String[] a) {
+        if (!has(s, "quickeco.admin", "qe.import")) { Msg.send(s, "no-permission"); return; }
+        if (a.length < 2) { Msg.plain(s, "&7Usage: &e/qe import <essentials|cmi>"); return; }
+        ImportManager.Source src;
+        switch (a[1].toLowerCase()) {
+            case "essentials", "essentialsx", "ess" -> src = ImportManager.Source.ESSENTIALS;
+            case "cmi" -> src = ImportManager.Source.CMI;
+            default -> { Msg.send(s, "import-unknown", "source", a[1]); return; }
+        }
+        Msg.send(s, "import-starting", "source", src.name());
+        ImportManager.Result r = new ImportManager(plugin).run(src);
+        if (!r.ok) {
+            Msg.send(s, "import-missing", "path", r.missingPath);
+            return;
+        }
+        Msg.send(s, "import-done",
+                "source", src.name(),
+                "imported", r.imported,
+                "skipped", r.skipped);
+    }
+
     private void setBool(CommandSender s, String path, String raw) {
         boolean b = raw.equalsIgnoreCase("true") || raw.equals("1")
                 || raw.equalsIgnoreCase("on") || raw.equalsIgnoreCase("yes");
@@ -213,7 +237,8 @@ public class QuickEcoCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender s, @NotNull Command c,
                                       @NotNull String l, @NotNull String[] a) {
         if (a.length == 1) {
-            return filter(List.of("help", "reload", "edit", "give", "take", "set", "remove", "settings"), a[0]);
+            return filter(List.of("help", "reload", "edit", "give", "take", "set",
+                    "remove", "settings", "import"), a[0]);
         }
         if (a.length == 2) {
             if (List.of("edit", "give", "take", "set", "remove").contains(a[0].toLowerCase())) {
@@ -221,6 +246,9 @@ public class QuickEcoCommand implements CommandExecutor, TabCompleter {
             }
             if (a[0].equalsIgnoreCase("settings")) {
                 return filter(List.of("debug", "log-transactions", "starting-balance", "max-pay", "pay-cooldown"), a[1]);
+            }
+            if (a[0].equalsIgnoreCase("import")) {
+                return filter(List.of("essentials", "cmi"), a[1]);
             }
         }
         if (a.length == 3 && a[0].equalsIgnoreCase("settings")) {

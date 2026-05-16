@@ -2,6 +2,8 @@ package com.quickeco.economy;
 
 import com.quickeco.QuickEco;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +26,23 @@ public class EconomyProvider {
     }
 
     public void createAccount(OfflinePlayer player) {
-        balances.putIfAbsent(player.getUniqueId(), getStartingBalance());
+        balances.putIfAbsent(player.getUniqueId(), startingBalanceFor(player));
+    }
+
+    private double startingBalanceFor(OfflinePlayer player) {
+        if (!plugin.getConfig().getBoolean("starting-balance-by-group.enabled", false)) {
+            return getStartingBalance();
+        }
+        if (!(player instanceof Player p)) return getStartingBalance();
+        ConfigurationSection sec = plugin.getConfig()
+                .getConfigurationSection("starting-balance-by-group.groups");
+        if (sec == null) return getStartingBalance();
+        for (String group : sec.getKeys(false)) {
+            if (p.hasPermission("quickeco.group." + group)) {
+                return sec.getDouble(group, getStartingBalance());
+            }
+        }
+        return getStartingBalance();
     }
 
     public void removeAccount(OfflinePlayer player) {

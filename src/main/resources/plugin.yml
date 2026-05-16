@@ -47,6 +47,7 @@ permissions:
       qe.set: true
       qe.remove: true
       qe.settings: true
+      qe.import: true
       qe.balance.others: true
   quickeco.use:
     description: Use economy commands (balance, pay, baltop)
@@ -62,6 +63,7 @@ permissions:
   qe.set: { default: op }
   qe.remove: { default: op }
   qe.settings: { default: op }
+  qe.import: { default: op }
   qe.balance: { default: true }
   qe.balance.others: { default: op }
   qe.pay: { default: true }
